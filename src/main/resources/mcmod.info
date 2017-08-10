@@ -1,0 +1,11 @@
+[{
+  "modid": "crystal_signal_pi",
+  "name": "Crystal Signal Pi Controller",
+  "description": "In-game Crystal Signal Pi controller",
+  "version": "0.1.0",
+  "mcversion": "1.12",
+  "logoFile": "assets/examplemod/textures/logo.png",
+  "url": "minecraftforge.net/",
+  "updateJSON": "minecraftforge.net/versions.json",
+  "authorList": ["progre"]
+}]
