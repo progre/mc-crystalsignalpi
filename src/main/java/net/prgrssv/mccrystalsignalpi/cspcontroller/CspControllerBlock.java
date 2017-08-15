@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -51,6 +52,8 @@ public class CspControllerBlock extends Block implements ITileEntityProvider {
         if (entity == null) {
             throw new IllegalStateException();
         }
+        CrystalSignalPi.getInstance().getLogger().error("Hi" + Minecraft.getMinecraft().world.isRemote);
+        CrystalSignalPi.getInstance().getLogger().debug("debug level");
         if (world.isBlockPowered(myBlockPos)) {
             entity.powerOn();
         } else {

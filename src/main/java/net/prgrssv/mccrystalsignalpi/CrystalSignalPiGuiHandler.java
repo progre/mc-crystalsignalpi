@@ -47,6 +47,7 @@ public class CrystalSignalPiGuiHandler implements IGuiHandler {
                         .size();
                 return new CspControllerGuiScreen(
                         numTarget,
+                        blockEntity.getPos(),
                         ((CspControllerBlockEntity) blockEntity).getState()
                 );
             }

@@ -6,6 +6,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.prgrssv.mccrystalsignalpi.CrystalSignalPi;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,6 +15,10 @@ public class CspControllerBlockEntity extends TileEntity {
     private boolean active = false;
     @Nonnull
     private CspControllerState state = CspControllerState.create();
+
+    public CspControllerBlockEntity() {
+        CrystalSignalPi.getInstance().getLogger().info("blockentity construct " + this.pos + ", " + this.hashCode());
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -33,10 +38,12 @@ public class CspControllerBlockEntity extends TileEntity {
                         true
                 )
         );
+        CrystalSignalPi.getInstance().getLogger().info("mode readed to " + state.getMode() + ", " + this.hashCode());
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
         compound.setInteger("target", state.getTarget());
         compound.setInteger("red", state.getRed());
         compound.setInteger("green", state.getGreen());
@@ -46,7 +53,7 @@ public class CspControllerBlockEntity extends TileEntity {
                 "lightOffWhenPowerOff",
                 state.isLightOffWhenPowerOff()
         );
-        return super.writeToNBT(compound);
+        return compound;
     }
 
     @Override
@@ -65,10 +72,12 @@ public class CspControllerBlockEntity extends TileEntity {
     @Nullable
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
+        NBTTagCompound nbtTagCompound = new NBTTagCompound();
+        writeToNBT(nbtTagCompound);
         return new SPacketUpdateTileEntity(
                 getPos(),
                 getBlockMetadata(),
-                getUpdateTag()
+                nbtTagCompound
         );
     }
 
@@ -87,11 +96,17 @@ public class CspControllerBlockEntity extends TileEntity {
         return state;
     }
 
+    public void setState(@Nonnull CspControllerState state) {
+        this.state = state;
+        CrystalSignalPi.getInstance().getLogger().info("mode set to " + state.getMode() + ", " + this.hashCode());
+    }
+
     void powerOn() {
         if (active) {
             return;
         }
         active = true;
+        CrystalSignalPi.getInstance().getLogger().info("poweron " + this.hashCode());
         CspController.sendFlash(state);
     }
 

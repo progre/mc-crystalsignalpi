@@ -15,7 +15,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.prgrssv.mccrystalsignalpi.cspcontroller.CspControllerBlockEntity;
 import net.prgrssv.mccrystalsignalpi.cspcontroller.CspControllerFactory;
+import net.prgrssv.mccrystalsignalpi.cspcontroller.gui.CspControllerGuiMessage;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.ref.WeakReference;
@@ -40,7 +44,7 @@ public class CrystalSignalPi {
     private ItemBlock cspController;
     private CrystalSignalPiConfiguration configuration;
     private SimpleNetworkWrapper network
-            = NetworkRegistry.INSTANCE.new.newSimpleChannel(MODID);
+            = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
     public CrystalSignalPi() {
         weakInstance = new WeakReference<>(this);
@@ -78,6 +82,13 @@ public class CrystalSignalPi {
         configuration = new CrystalSignalPiConfiguration(
                 e.getSuggestedConfigurationFile()
         );
+
+        network.registerMessage(
+                CrystalSignalPiMessageHandler.class,
+                CspControllerGuiMessage.class,
+                0,
+                Side.SERVER
+        );
     }
 
     @Mod.EventHandler
@@ -95,6 +106,7 @@ public class CrystalSignalPi {
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(cspController.getBlock());
+        GameRegistry.registerTileEntity(CspControllerBlockEntity.class, CspControllerFactory.NAME);
     }
 
     @SubscribeEvent

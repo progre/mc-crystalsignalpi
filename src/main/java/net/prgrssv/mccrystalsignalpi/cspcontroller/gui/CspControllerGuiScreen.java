@@ -2,6 +2,7 @@ package net.prgrssv.mccrystalsignalpi.cspcontroller.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.prgrssv.mccrystalsignalpi.CrystalSignalPi;
 import net.prgrssv.mccrystalsignalpi.cspcontroller.CspControllerState;
@@ -12,6 +13,7 @@ import java.util.Collection;
 
 public class CspControllerGuiScreen extends GuiScreen {
     private final int numTarget;
+    private BlockPos pos;
     private CspControllerState state;
     private GuiSlider target;
     private RGBGuiGroup rgbGuiGroup;
@@ -19,9 +21,11 @@ public class CspControllerGuiScreen extends GuiScreen {
 
     public CspControllerGuiScreen(
             int numTarget,
+            @Nonnull BlockPos pos,
             @Nonnull CspControllerState state
     ) {
         this.numTarget = numTarget;
+        this.pos = pos;
         this.state = state;
     }
 
@@ -67,19 +71,17 @@ public class CspControllerGuiScreen extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton item) throws IOException {
         super.actionPerformed(item);
-
         if (item == flashGuiGroup.getMode()) {
-            state.cycleMode();
+            state = state.cycleMode();
             updateGui();
-            return;
-        }
-        if (item == flashGuiGroup.getLightOffWhenPowerOff()) {
-            state.setLightOffWhenPowerOff(!state.isLightOffWhenPowerOff());
+        } else if (item == flashGuiGroup.getLightOffWhenPowerOff()) {
+            state = state.setLightOffWhenPowerOff(!state.isLightOffWhenPowerOff());
             updateGui();
-//            return;
         }
         CspControllerGuiMessage message = new CspControllerGuiMessage();
+        message.setPos(pos);
         message.setState(state);
+        CrystalSignalPi.getInstance().getLogger().info("click");
         CrystalSignalPi.getInstance().getNetwork().sendToServer(message);
     }
 
