@@ -170,7 +170,7 @@ public class CspControllerState {
         return lightOffWhenPowerOff;
     }
 
-    public CspControllerState setLightOffWhenPowerOff(boolean lightOffWhenPowerOff) {
+    public CspControllerState toggleLightOffWhenPowerOff() {
         return new CspControllerState(
                 target,
                 red,
@@ -179,7 +179,7 @@ public class CspControllerState {
                 mode,
                 period,
                 repeat,
-                lightOffWhenPowerOff
+                !lightOffWhenPowerOff
         );
     }
 }

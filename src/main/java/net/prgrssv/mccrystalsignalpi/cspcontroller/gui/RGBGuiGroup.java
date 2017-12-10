@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RGBGuiGroup {
+class RGBGuiGroup {
     private GuiSlider r;
     private GuiSlider g;
     private GuiSlider b;
@@ -15,11 +15,11 @@ public class RGBGuiGroup {
     RGBGuiGroup(
             int initialId,
             int xPos,
-            int yPos
+            int yPos,
+            GuiSlider.ISlider onRedChange,
+            GuiSlider.ISlider onGreenChange,
+            GuiSlider.ISlider onBlueChange
     ) {
-        GuiSlider.ISlider par = (GuiSlider guiSlider) -> {
-//                guiSlider.displayString = guiSlider.dispString + ": " + guiSlider.getValueInt();
-        };
         r = GuiFactory.createIntSlider(
                 initialId,
                 xPos,
@@ -29,7 +29,7 @@ public class RGBGuiGroup {
                 0,
                 255,
                 1,
-                par
+                onRedChange
         );
         g = GuiFactory.createIntSlider(
                 initialId + 1,
@@ -40,7 +40,7 @@ public class RGBGuiGroup {
                 0,
                 255,
                 1,
-                par
+                onGreenChange
         );
         b = GuiFactory.createIntSlider(
                 initialId + 2,
@@ -51,23 +51,29 @@ public class RGBGuiGroup {
                 0,
                 255,
                 1,
-                par
+                onBlueChange
         );
     }
 
-    public GuiSlider getR() {
+    GuiSlider getR() {
         return r;
     }
 
-    public GuiSlider getG() {
+    GuiSlider getG() {
         return g;
     }
 
-    public GuiSlider getB() {
+    GuiSlider getB() {
         return b;
     }
 
     ImmutableList<GuiButton> getItems() {
         return ImmutableList.of(r, g, b);
+    }
+
+    void update(int red, int green, int blue) {
+        r.setValue(red);
+        g.setValue(green);
+        b.setValue(blue);
     }
 }

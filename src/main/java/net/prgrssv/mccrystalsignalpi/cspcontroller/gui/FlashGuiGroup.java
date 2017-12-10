@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class FlashGuiGroup {
+class FlashGuiGroup {
     private GuiButtonExt mode;
     private GuiSlider interval;
     private GuiButtonExt lightOffWhenPowerOff;
@@ -17,7 +17,8 @@ public class FlashGuiGroup {
             int initialId,
             int xPos,
             int yPos,
-            int width
+            int width,
+            GuiSlider.ISlider onPeriodChange
     ) {
         mode = new GuiButtonExt(
                 initialId,
@@ -34,12 +35,7 @@ public class FlashGuiGroup {
                 1,
                 3000,
                 1,
-                new GuiSlider.ISlider() {
-                    @Override
-                    public void onChangeSliderValue(GuiSlider guiSlider) {
-//                        guiSlider.displayString = "対象: " + guiSlider.getValueInt();
-                    }
-                }
+                onPeriodChange
         );
         lightOffWhenPowerOff = new GuiButtonExt(
                 initialId + 2,
@@ -49,15 +45,15 @@ public class FlashGuiGroup {
         );
     }
 
-    public GuiButtonExt getMode() {
+    GuiButtonExt getMode() {
         return mode;
     }
 
-    public GuiSlider getInterval() {
+    GuiSlider getInterval() {
         return interval;
     }
 
-    public GuiButtonExt getLightOffWhenPowerOff() {
+    GuiButtonExt getLightOffWhenPowerOff() {
         return lightOffWhenPowerOff;
     }
 

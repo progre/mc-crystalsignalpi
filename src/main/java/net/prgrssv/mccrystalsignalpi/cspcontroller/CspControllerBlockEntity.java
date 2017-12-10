@@ -112,6 +112,9 @@ public class CspControllerBlockEntity extends TileEntity {
 
     void powerOff() {
         active = false;
+        if (!state.isLightOffWhenPowerOff()) {
+            return;
+        }
         CspController.sendClear(state);
     }
 

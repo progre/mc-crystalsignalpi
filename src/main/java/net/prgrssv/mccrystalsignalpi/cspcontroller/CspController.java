@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.prgrssv.mccrystalsignalpi.CrystalSignalPi;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class CspController {
     public static void sendFlash(CspControllerState state) {
@@ -49,6 +50,6 @@ public class CspController {
 
     private static void requestGetMethod(String url) throws IOException {
         CrystalSignalPi.getInstance().getLogger().info("Crystal Signal Pi: Request: " + url);
-//        new URL(url).openStream().close();
+        new URL(url).openStream().close();
     }
 }
